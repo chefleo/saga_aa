@@ -1,11 +1,11 @@
 const hre = require("hardhat");
 
-const ACCOUNT_ADDR = "0xb4dC171C0edEc8C0032cd0f2d30921c09FA35e34";
-
 async function main() {
-  const account = await hre.ethers.getContractAt("Account", ACCOUNT_ADDR);
-  const owner = await account.owner();
-  console.log("owner", owner);
+  const addressBook = await hre.ethers.deployContract("AddressBook");
+
+  await addressBook.waitForDeployment();
+
+  console.log(`AddressBook deployed to ${addressBook.target}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
