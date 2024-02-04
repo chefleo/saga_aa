@@ -2,9 +2,8 @@ const { ethers } = require("hardhat");
 const hre = require("hardhat");
 
 const FACTORY_NONCE = 1;
-const FACTORY_ADDRESS = "0x998abeb3E57409262aE5b751f60747921B33613E";
+const FACTORY_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 const EP_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const AddressBook_ADDR = "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9";
 
 async function main() {
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", EP_ADDRESS);
@@ -21,24 +20,15 @@ async function main() {
   const [signer0] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
-  // "0x";
-  const initCode =
-    FACTORY_ADDRESS +
-    AccountFactory.interface
-      .encodeFunctionData("createAccount", [address0])
-      .slice(2);
+  const initCode = "0x";
+  // FACTORY_ADDRESS +
+  // AccountFactory.interface
+  //   .encodeFunctionData("createAccount", [address0])
+  //   .slice(2);
 
-  console.log(sender);
-
-  await entryPoint.depositTo(sender, {
-    value: hre.ethers.parseEther("10"),
-  });
-
-  const addressBook = await hre.ethers.getContractFactory("AddressBook");
-  const addressBookEncoded = addressBook.interface.encodeFunctionData(
-    "addContact",
-    ["0xed52E156aa52453f944505AA51117e2Eb82b0b09", "Leonardo"]
-  );
+  // await entryPoint.depositTo(sender, {
+  //   value: hre.ethers.parseEther("10"),
+  // });
 
   const Account = await hre.ethers.getContractFactory("Account");
 
@@ -46,15 +36,11 @@ async function main() {
     sender, // smart account address
     nonce: await entryPoint.getNonce(sender, 0),
     initCode, // Creation of the wallet
-    callData: Account.interface.encodeFunctionData("execute", [
-      AddressBook_ADDR,
-      0,
-      addressBookEncoded,
-    ]),
+    callData: Account.interface.encodeFunctionData("execute"),
 
     // Gas section
-    callGasLimit: 900_000,
-    verificationGasLimit: 500_000,
+    callGasLimit: 400_000,
+    verificationGasLimit: 200_000,
     preVerificationGas: 100_000,
     maxFeePerGas: hre.ethers.parseUnits("10", "gwei"),
     maxPriorityFeePerGas: hre.ethers.parseUnits("5", "gwei"),
