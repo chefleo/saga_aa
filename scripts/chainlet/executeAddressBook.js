@@ -21,12 +21,6 @@ async function main() {
   // AddressBook Contract and encoded function
   const addressBook = await hre.ethers.getContractFactory("AddressBook");
 
-  // Encoded function needed for calldata in userOp
-  const addressBookEncoded = addressBook.interface.encodeFunctionData(
-    "addContact",
-    ["0xed52E156aa52453f944505AA51117e2Eb82b0b09", "Leonardo"]
-  );
-
   // CREATE: hash(sender or deployer + nonce)
   const sender = await hre.ethers.getCreateAddress({
     from: FACTORY_ADDRESS,
@@ -69,10 +63,16 @@ async function main() {
   } else {
     // Fund the smart account
     await entryPoint.depositTo(sender, {
-      value: hre.ethers.parseEther("10"),
+      value: hre.ethers.parseEther("2"),
     });
     console.log("Smart Wallet funded");
   }
+
+  // Encoded function needed for calldata in userOp
+  const addressBookEncoded = addressBook.interface.encodeFunctionData(
+    "addContact",
+    ["0xed52E156aa52453f944505AA51117e2Eb82b0b09", "Leonardo"]
+  );
 
   console.log(`
   userOp = {
