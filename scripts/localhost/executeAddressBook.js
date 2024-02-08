@@ -11,6 +11,10 @@ async function main() {
   const [signer0] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
+  const balanceAddr = await hre.ethers.provider.getBalance(address0);
+
+  console.log("Balance address", balanceAddr);
+
   // EntryPoint contract
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", EP_ADDRESS);
 

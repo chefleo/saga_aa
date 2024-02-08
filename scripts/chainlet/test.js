@@ -50,7 +50,7 @@ async function main() {
 
   console.log("balanceEth", balanceEth);
 
-  if (balanceEth > 1) {
+  if (balanceEth > 2) {
     console.log(
       "No needed to be funded, balance of the smart wallet:",
       hre.ethers.formatUnits(balance, "ether")
@@ -58,7 +58,7 @@ async function main() {
   } else {
     // Fund the smart account
     await entryPoint.depositTo(sender, {
-      value: hre.ethers.parseEther("2"),
+      value: hre.ethers.parseEther("10"),
     });
     console.log("Smart Wallet funded");
   }
