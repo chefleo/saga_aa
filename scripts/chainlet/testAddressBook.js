@@ -1,6 +1,6 @@
 const hre = require("hardhat");
 
-const AddressBook_ADDR = "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9";
+const AddressBook_ADDR = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
 
 async function main() {
   const addressBook = await hre.ethers.getContractAt(
