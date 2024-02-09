@@ -1,6 +1,6 @@
 const hre = require("hardhat");
 
-const SimpleStorage_ADDR = "0x9E545E3C0baAB3E08CdfD552C960A1050f373042";
+const SimpleStorage_ADDR = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
 
 async function main() {
   const simpleStorage = await hre.ethers.getContractAt(

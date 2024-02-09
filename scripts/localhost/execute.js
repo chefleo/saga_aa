@@ -2,11 +2,11 @@ const { ethers } = require("hardhat");
 const hre = require("hardhat");
 
 const FACTORY_NONCE = 1;
-const FACTORY_ADDRESS = "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f";
-const EP_ADDRESS = "0x4A679253410272dd5232B3Ff7cF5dbB88f295319";
-const PM_ADDRESS = "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F";
+const FACTORY_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const EP_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const PM_ADDRESS = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 // const AddressBook_ADDR = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
-const SimpleStorage_ADDR = "0x9E545E3C0baAB3E08CdfD552C960A1050f373042";
+const SimpleStorage_ADDR = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
 
 async function main() {
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", EP_ADDRESS);
@@ -58,7 +58,7 @@ async function main() {
   // Encoded function needed for calldata in userOp
   const simpleStorageEncoded = simpleStorage.interface.encodeFunctionData(
     "set",
-    [100]
+    [10]
   );
 
   const Account = await hre.ethers.getContractFactory("Account");
@@ -85,7 +85,8 @@ async function main() {
     signature: "0x",
   };
 
-  console.log({ userOp });
+  const userOpHash = await entryPoint.getUserOpHash(userOp);
+  userOp.signature = signer0.signMessage(hre.ethers.getBytes(userOpHash));
 
   const tx = await entryPoint.handleOps([userOp], address0);
   const receipt = await tx.wait();
