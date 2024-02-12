@@ -6,7 +6,6 @@ import "@account-abstraction/contracts/interfaces/IAccount.sol";
 
 
 contract Account is IAccount {
-  uint public count;
   address public owner;
 
   constructor(address _owner) {
