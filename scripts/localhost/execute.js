@@ -21,7 +21,7 @@ async function main() {
   const AccountFactory = await hre.ethers.getContractFactory("AccountFactory");
 
   // This will be the owner of the smart account
-  const [signer0] = await hre.ethers.getSigners();
+  const [signer0, signer1] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
   const nonce = await entryPoint.getNonce(sender, 0);
@@ -86,7 +86,9 @@ async function main() {
   };
 
   const userOpHash = await entryPoint.getUserOpHash(userOp);
-  userOp.signature = signer0.signMessage(hre.ethers.getBytes(userOpHash));
+  userOp.signature = await signer0.signMessage(hre.ethers.getBytes(userOpHash));
+
+  console.log({ userOpHash }, "userOp sign", userOp.signature);
 
   const tx = await entryPoint.handleOps([userOp], address0);
   const receipt = await tx.wait();

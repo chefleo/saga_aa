@@ -3,16 +3,19 @@ const hre = require("hardhat");
 const AddressBook_ADDR = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
 
 async function main() {
-  const addressBook = await hre.ethers.getContractAt(
-    "AddressBook",
-    AddressBook_ADDR
-  );
+  const [signer0] = await hre.ethers.getSigners();
+  const address0 = await signer0.getAddress();
+  console.log({ signer0, address0 });
+  // const addressBook = await hre.ethers.getContractAt(
+  //   "AddressBook",
+  //   AddressBook_ADDR
+  // );
 
-  const test = await addressBook.test();
-  console.log("test", test);
+  // const test = await addressBook.test();
+  // console.log("test", test);
 
-  const contacts = await addressBook.getContacts();
-  console.log("contacts", contacts);
+  // const contacts = await addressBook.getContacts();
+  // console.log("contacts", contacts);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

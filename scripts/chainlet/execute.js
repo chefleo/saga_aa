@@ -2,10 +2,11 @@ const { ethers } = require("hardhat");
 const hre = require("hardhat");
 
 const FACTORY_NONCE = 1;
-const FACTORY_ADDRESS = "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f";
-const EP_ADDRESS = "0x4A679253410272dd5232B3Ff7cF5dbB88f295319";
-const PM_ADDRESS = "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F";
-const AddressBook_ADDR = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
+const FACTORY_ADDRESS = "0x7e37Ca3A1415Ff13bB0c2fBc9FF90Aa35528dEE2";
+const EP_ADDRESS = "0x9FA068d3c4EF70f80a2eA2Ff992E3b12E810bb12";
+const PM_ADDRESS = "0x83a41bE26bE9A0510A50984751712275a9a21BFf";
+// const AddressBook_ADDR = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
+const SimpleStorage_ADDR = "0x71665bbb973B63634331A6A74B6Bd895adfC9bA6";
 
 async function main() {
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", EP_ADDRESS);
@@ -52,12 +53,12 @@ async function main() {
   }
 
   // AddressBook Contract and encoded function
-  const addressBook = await hre.ethers.getContractFactory("AddressBook");
+  const simpleStorage = await hre.ethers.getContractFactory("SimpleStorage");
 
   // Encoded function needed for calldata in userOp
-  const addressBookEncoded = addressBook.interface.encodeFunctionData(
-    "addContact",
-    ["0xed52E156aa52453f944505AA51117e2Eb82b0b09", "Leonardo"]
+  const simpleStorageEncoded = simpleStorage.interface.encodeFunctionData(
+    "set",
+    [15]
   );
 
   const Account = await hre.ethers.getContractFactory("Account");
@@ -67,9 +68,9 @@ async function main() {
     nonce: await entryPoint.getNonce(sender, 0),
     initCode: initCode, // Creation of the wallet
     callData: Account.interface.encodeFunctionData("execute", [
-      AddressBook_ADDR,
+      SimpleStorage_ADDR,
       0,
-      addressBookEncoded,
+      simpleStorageEncoded,
     ]),
 
     // Gas section
@@ -84,11 +85,14 @@ async function main() {
     signature: "0x",
   };
 
-  console.log({ userOp });
+  const userOpHash = await entryPoint.getUserOpHash(userOp);
+  userOp.signature = await signer0.signMessage(hre.ethers.getBytes(userOpHash));
 
   const tx = await entryPoint.handleOps([userOp], address0);
   const receipt = await tx.wait();
-  console.log(receipt);
+
+  console.log({ userOpHash, userOp });
+  // console.log(receipt);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

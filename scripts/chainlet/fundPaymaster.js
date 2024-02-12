@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
-const EP_ADDRESS = "0x1749637Dc3b459c8927c18BbdCe8D25070849C08";
-const PM_ADDRESS = "0x0bE1Ce3bFF7FA929e3C9e1395E97fABfB5084b5D";
+const EP_ADDRESS = "0x9FA068d3c4EF70f80a2eA2Ff992E3b12E810bb12";
+const PM_ADDRESS = "0x83a41bE26bE9A0510A50984751712275a9a21BFf";
 
 async function main() {
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", EP_ADDRESS);
@@ -16,7 +16,7 @@ async function main() {
     );
   } else {
     await entryPoint.depositTo(PM_ADDRESS, {
-      value: hre.ethers.parseEther("100"),
+      value: hre.ethers.parseEther("10"),
     });
     console.log("Paymaster funded");
   }
