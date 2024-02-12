@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "hardhat/console.sol";
 
 contract Account is IAccount {
-  uint public count;
   address public owner;
 
   constructor(address _owner) {
