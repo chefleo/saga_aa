@@ -9,7 +9,9 @@ module.exports = {
   networks: {
     tutorialworldV2: {
       chainId: 2705143118829000,
-      url: "https://tutorialworldtwo-2705143118829000-1.jsonrpc.testnet-srv2.sagarpc.io",
+      // If you use Chainlet Testnet it will be with --> .jsonrpc.testnet.sagarpc.io
+      // If you use Mainnet it will be with --> .jsonrpc.sagarpc.io
+      url: "https://tutorialworldtwo-2705143118829000-1.jsonrpc.testnet.sagarpc.io",
       accounts: [PRIVATE_KEY], // Private Key of your metamask wallet
     },
   },
